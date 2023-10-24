@@ -1,6 +1,6 @@
 import tempfile
 import os
-from flask import Flask, request, redirect, send_file
+from flask import Flask, request, redirect, send_file, send_from_directory
 from skimage import io
 import base64
 import glob
@@ -14,16 +14,29 @@ main_html = """
     <style>
         @font-face {
             font-family: 'MinecraftRegular'; 
-            src: url('D:/documents/UPC/Ciclo VI/Procesamiento de Imagenes/TA3/wspace/fonts/MinecraftRegular-Bmg3.otf') format('opentype');
-            <!-- En mi caso uso toda la ruta para que no me de error, igual no cambia la fuente xd-->
+            src: url('/static/fonts/MinecraftRegular-Bmg3.otf') format('opentype');
             font-weight: normal;
             font-style: normal;
         }
         
         body {
             font-family: 'MinecraftRegular', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
+        
+        .canvas-container {
+            text-align: center;
+        }
+        
     </style>
+    
+    <img src="/static/image/SGA.png" alt="Standard Galactic Alphabet" style="width: 300px; height: 150px;">
+    <!-- En mi máquina, la imagen y la fuente no renderizan -->
+    
 </head>
 <script>
   var mousePressed = false;
@@ -167,7 +180,6 @@ def download_X():
 @app.route('/y.npy', methods=['GET'])
 def download_y():
     return send_file('y.npy')
-
 
 if __name__ == "__main__":
     digits = ["A", "E", "I", "O", "U"]
